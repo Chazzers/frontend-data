@@ -1,0 +1,57 @@
+$main-color: #6f4e53;
+$second-color: #4d817f;
+$third-color:#f1c399;
+$fourth-color: #dd98a1;
+$fifth-color:#ea6a4b;
+$sixth-color: #42645b;
+$padding-one: 1em;
+
+body {
+  background-color: $third-color;
+  padding: 0;
+  margin: 0;
+  font-family: "Lato", sans-serif;
+
+  nav {
+    background-color: $main-color;
+    padding: $padding-one;
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: space-between;
+
+      li {
+        color: $third-color;
+
+        img {
+          width: 30px;
+          height: 30px;
+        }
+      }
+    }
+  }
+
+  #svgcontainer {
+    display: flex;
+    justify-content: center;
+
+    .bubble {
+    }
+  }
+
+  h1 {
+    color: $main-color;
+    text-align: center;
+  }
+
+  .bubble-container {
+    transition: all 0.1s;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+}

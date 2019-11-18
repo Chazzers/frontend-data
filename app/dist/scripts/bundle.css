@@ -1,0 +1,29 @@
+body {
+  background-color: #f1c399;
+  padding: 0;
+  margin: 0;
+  font-family: "Lato", sans-serif; }
+  body nav {
+    background-color: #6f4e53;
+    padding: 1em; }
+    body nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: space-between; }
+      body nav ul li {
+        color: #f1c399; }
+        body nav ul li img {
+          width: 30px;
+          height: 30px; }
+  body #svgcontainer {
+    display: flex;
+    justify-content: center; }
+  body h1 {
+    color: #6f4e53;
+    text-align: center; }
+  body .bubble-container {
+    transition: all 0.1s; }
+    body .bubble-container:hover {
+      transform: scale(1.1); }
