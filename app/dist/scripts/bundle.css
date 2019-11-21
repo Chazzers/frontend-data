@@ -17,13 +17,19 @@ body {
         body nav ul li img {
           width: 30px;
           height: 30px; }
-  body #svgcontainer {
+  body .chart-container {
+    display: flex; }
+    body .chart-container .chart {
+      flex: 1;
+      display: flex;
+      flex-direction: column; }
+  body .svg-container {
     display: flex;
-    justify-content: center; }
+    justify-content: flex-start; }
   body h1 {
     color: #6f4e53;
     text-align: center; }
+  body .node:hover circle {
+    stroke: black; }
   body .bubble-container {
     transition: all 0.1s; }
-    body .bubble-container:hover {
-      transform: scale(1.1); }

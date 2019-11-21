@@ -7,7 +7,6 @@ import serve from 'rollup-plugin-serve';
 import copy from 'rollup-plugin-copy';
 import scss from 'rollup-plugin-scss';
 import livereload from 'rollup-plugin-livereload';
-import path from 'path';
 
 
 export default {

@@ -34,9 +34,19 @@ body {
     }
   }
 
-  #svgcontainer {
+  .chart-container {
     display: flex;
-    justify-content: center;
+
+    .chart {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  .svg-container {
+    display: flex;
+    justify-content: flex-start;
 
     .bubble {
     }
@@ -47,11 +57,15 @@ body {
     text-align: center;
   }
 
+  .node {
+    &:hover {
+      circle {
+        stroke: black;
+      }
+    }
+  }
+
   .bubble-container {
     transition: all 0.1s;
-
-    &:hover {
-      transform: scale(1.1);
-    }
   }
 }
