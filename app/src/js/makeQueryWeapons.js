@@ -3,6 +3,7 @@ import { runQueryWeapons } from "./runQueryWeapons.js";
 
 function makeQueryWeapons(event) {
 	const optionValue = event.target.value;
+	const selectId = event.currentTarget.id;
 
 	const query = `
 	PREFIX dct: <http://purl.org/dc/terms/>
@@ -28,7 +29,7 @@ function makeQueryWeapons(event) {
 	`;
 	const connectionString = url + "?query=" + encodeURIComponent(query) + "&format=json";
 
-	return runQueryWeapons(connectionString);
+	return runQueryWeapons(connectionString, selectId);
 }
 
 export { makeQueryWeapons };

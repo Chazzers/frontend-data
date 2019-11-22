@@ -2,13 +2,15 @@
 // Based on example from https://bl.ocks.org/alokkshukla/3d6be4be0ef9f6977ec6718b2916d168
 
 import { scaleOrdinal, pack, select, selectAll, schemeCategory10, hierarchy } from "d3";
-import { getCurrentTarget } from "./getCurrentTarget.js"
+import { getCurrentTarget } from "./getCurrentTarget.js";
 
-function createChart(data) {
+function createChart(data, id) {
 	// To make a bubblechart the data needs to be nested into a parent object.
 	const root = {
 		children: data
 	}
+
+	data.sort((a,b)=> (a.key > b.key)?1:((b.key >a.key)? -1:0))
 
 	// Scale the svg dimensions based on the width and height of the browser
 	const height = window.innerHeight / 2.2;
@@ -22,15 +24,33 @@ function createChart(data) {
 		.size([width, height])
 		.padding(10);
 
-	const getCurrentTargetId = document.querySelectorAll(".chart").forEach(select => {
-		select.addEventListener("change", getCurrentTarget)
-		return getCurrentTarget;
-	})
-	console.log(getCurrentTargetId);
+const colors = {
+	"Bijl": "#1f77b4",
+	"Boog": "#ff7f0e",
+	"Zwaard": "#2ca02c",
+	"Vechtketting": "#d62728",
+	"Dolk": "#9467bd",
+	"Strijdzeis": "#8c564b",
+	"Lans": "#e377c2",
+	"Mes": "#7f7f7f",
+	"Knots": "#bcbd22",
+	"Piek": "#17becf"
+}
+
+
+
+
+	console.log(colors["Bijl"]);
+
+	// data.forEach((dataItem, i) => dataItem.color = colors[i]);
+
+	console.log(data);
+
+	// console.log(getCurrentTargetId1)
 	// .forEach(chart => chart.addEventListener("change", getCurrentTarget))
 
 	// This adds a svg element and determines the size of the svg and adds the class: bubble
-	const svg = select(`#chart1`)
+	const svg = select(`#${id}`)
 		.select(".bubble");
 
 	// this selects all the nodes and puts it in an array
@@ -61,8 +81,9 @@ function createChart(data) {
 					return d.r;
 				})
 				.style("fill", function(d,i) {
-					return color(i);
+					return colors[d.data.key]
 				});
+
 			nodeEnter.append("text")
 				.attr("dy", ".2em")
 				.style("text-anchor", "middle")
@@ -117,7 +138,7 @@ function createChart(data) {
 					return d.r;
 				})
 				.style("fill", function(d,i) {
-					return color(i);
+					return colors[d.data.key]
 				});
 			update.select("text")
 				.attr("dy", ".2em")
@@ -129,7 +150,7 @@ function createChart(data) {
 				.attr("font-size", function(d){
 					return d.r/3;
 				})
-				.attr("fill", "white")
+				.attr("fill", "white")				
 		}
 	)
 

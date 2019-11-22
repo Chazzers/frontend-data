@@ -18,7 +18,8 @@ body {
           width: 30px;
           height: 30px; }
   body .chart-container {
-    display: flex; }
+    display: flex;
+    padding: 0 1em; }
     body .chart-container .chart {
       flex: 1;
       display: flex;
