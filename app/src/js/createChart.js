@@ -2,11 +2,11 @@
 // Based on example from https://bl.ocks.org/alokkshukla/3d6be4be0ef9f6977ec6718b2916d168
 
 import { scaleOrdinal, pack, select, selectAll, schemeCategory10, hierarchy } from "d3";
+import { getCurrentTarget } from "./getCurrentTarget.js"
 
 function createChart(data) {
-	console.log(data);
 	// To make a bubblechart the data needs to be nested into a parent object.
-	const dataset = {
+	const root = {
 		children: data
 	}
 
@@ -18,94 +18,123 @@ function createChart(data) {
 	const color = scaleOrdinal(schemeCategory10);
 
 	// This packs the bubble
-	const bubble = pack(dataset)
+	const bubble = pack(root)
 		.size([width, height])
 		.padding(10);
 
+	const getCurrentTargetId = document.querySelectorAll(".chart").forEach(select => {
+		select.addEventListener("change", getCurrentTarget)
+		return getCurrentTarget;
+	})
+	console.log(getCurrentTargetId);
+	// .forEach(chart => chart.addEventListener("change", getCurrentTarget))
+
 	// This adds a svg element and determines the size of the svg and adds the class: bubble
-	const svg = select("#chart1")
+	const svg = select(`#chart1`)
 		.select(".bubble");
 
 	// this selects all the nodes and puts it in an array
-	const nodes = hierarchy(dataset)
+	const nodes = hierarchy(root)
 		.sum(d => d.amount);
 
 	// this selects all of the individual nodes, adds a "g" element to all the nodes and adds a class as well
 
-	const node = svg.selectAll(".node")
-		.data(bubble(nodes).descendants())
-		.attr('r', 0);
-
-	const nodeEnter = node.enter()
+	let node = svg.selectAll(".node")
+		.data(bubble(nodes).descendants()
 		.filter(function(d){
-			return !d.children;
-		})
-		.merge(node)
-		.append("g")
-		.attr("class", "node")
-		.attr("transform", function(d) {
-			return "translate(" + d.x + "," + d.y + ")";
-		});
-	// This adds a title to every individual bubble
-	nodeEnter.append("title")
-		.text(function(d) {
-			return d.data.key + ": " + d.data.amount;
-		});
+					return !d.children;
+		}))
 
-	// this nests the bubble contents into a container. I did this so i could add transitions to my entire bubble
-	nodeEnter.append("g")
-		.attr("class", "bubble-container")
-		.append("circle")
-		.attr("r", function(d) {
-			return d.r;
-		})
-		.style("fill", function(d,i) {
-			return color(i);
-		});
-	// This selects the container of an individual bubble and adds the text of the weapon type to it.
-	nodeEnter.select(".bubble-container")
-		.append("text")
-		.attr("dy", ".2em")
-		.style("text-anchor", "middle")
-		.text(function(d) {
-			return d.data.key.substring(0, d.r / 1);
-		})
-		.attr("font-family", "sans-serif")
-		.attr("font-size", function(d){
-			return d.r/3;
-		})
-		.attr("fill", "white")
+	node.join(
+		enter => {
+			const nodeEnter = enter.append("g")
+			.attr("class", "node")
+			.attr("transform", function(d) {
+				return "translate(" + d.x + "," + d.y + ")";
+			})
+			nodeEnter.append("title")
+				.text(function(d) {
+					return d.data.key + ": " + d.data.amount;
+				})
+			nodeEnter.append("circle")
+				.attr("r", function(d) {
+					return d.r;
+				})
+				.style("fill", function(d,i) {
+					return color(i);
+				});
+			nodeEnter.append("text")
+				.attr("dy", ".2em")
+				.style("text-anchor", "middle")
+				.text(function(d) {
+					return d.data.key.substring(0, d.r / 1);
+				})
+				.attr("font-family", "sans-serif")
+				.attr("font-size", function(d){
+					return d.r/3;
+				})
+				.attr("fill", "white")
 
-		node.merge(nodeEnter).exit().remove()
+			const selectBubble = d => {
+
+				const { data } = d;
+
+				const currentBubble = select(this);
+
+				if(currentBubble !== this){
+					svg.selectAll("#details-popup").remove();
+				}
+
+				const textblock = svg.selectAll("#details-popup")
+					.data([d])
+					.enter()
+					.append("g")
+					.attr("id", "details-popup")
+					.attr("font-size", 14)
+					.attr("font-family", "sans-serif")
+					.attr("text-anchor", "start")
+					.attr("transform", data => `translate(0, 20)`);
+
+				textblock.append("text")
+					.text(data.key + ": " + data.amount)
+					.attr("y", "16")
+
+				}
+				nodeEnter.on("click", selectBubble);
+			},
+		update => {
+			console.log(update);
+			update.transition().duration(300)
+			.attr("transform", function(d) {
+				return "translate(" + d.x + "," + d.y + ")";
+			})
+			update.select("title")
+				.text(function(d) {
+					return d.data.key + ": " + d.data.amount;
+				})
+			update.select("circle")
+				.attr("r", function(d) {
+					return d.r;
+				})
+				.style("fill", function(d,i) {
+					return color(i);
+				});
+			update.select("text")
+				.attr("dy", ".2em")
+				.style("text-anchor", "middle")
+				.text(function(d) {
+					return d.data.key.substring(0, d.r / 1);
+				})
+				.attr("font-family", "sans-serif")
+				.attr("font-size", function(d){
+					return d.r/3;
+				})
+				.attr("fill", "white")
+		}
+	)
 
 	// This is a click function that when clicked displays the weapon type and value of the clicked bubble
 	// Based on example from https://observablehq.com/@johnhaldeman/tutorial-on-d3-basics-and-circle-packing-heirarchical-bubb
-	const selectBubble = d => {
-
-		const { data } = d;
-
-		const currentBubble = select(this);
-
-		if(currentBubble !== this){
-			svg.selectAll("#details-popup").remove();
-		}
-
-		const textblock = svg.selectAll("#details-popup")
-			.data([d])
-			.enter()
-			.append("g")
-			.attr("id", "details-popup")
-			.attr("font-size", 14)
-			.attr("font-family", "sans-serif")
-			.attr("text-anchor", "start")
-			.attr("transform", data => `translate(0, 20)`);
-
-		textblock.append("text")
-			.text(data.key + ": " + data.amount)
-			.attr("y", "16")
-
-	}
-	nodeEnter.on("click", selectBubble);
 
 	select(self.frameElement)
 		.style("height", height + "px");

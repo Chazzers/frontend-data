@@ -11,6 +11,7 @@ json(makeQueryRegions())
 	.then(() => createSvg());
 
 document.getElementById("chart1").addEventListener("change", makeQueryWeapons);
+document.getElementById("chart2").addEventListener("change", makeQueryWeapons);
 
 function createOptions(data) {
 	const selects = document.querySelectorAll(".select");
