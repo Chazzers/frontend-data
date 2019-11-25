@@ -10,8 +10,6 @@ function createChart(data, id) {
 		children: data
 	}
 
-	data.sort((a,b)=> (a.key > b.key)?1:((b.key >a.key)? -1:0))
-
 	// Scale the svg dimensions based on the width and height of the browser
 	const height = window.innerHeight / 2.2;
 	const width = window.innerWidth / 2.2;
@@ -27,35 +25,71 @@ function createChart(data, id) {
 const colors = {
 	"Bijl": "#1f77b4",
 	"Boog": "#ff7f0e",
-	"Zwaard": "#2ca02c",
-	"Vechtketting": "#d62728",
 	"Dolk": "#9467bd",
-	"Strijdzeis": "#8c564b",
+	"Knots": "#bcbd22",
 	"Lans": "#e377c2",
 	"Mes": "#7f7f7f",
-	"Knots": "#bcbd22",
-	"Piek": "#17becf"
+	"Piek": "#17becf",
+	"Strijdzeis": "#8c564b",
+	"Vechtketting": "#d62728",
+	"Zwaard": "#2ca02c"
 }
 
-
-
-
-	console.log(colors["Bijl"]);
-
-	// data.forEach((dataItem, i) => dataItem.color = colors[i]);
-
-	console.log(data);
-
-	// console.log(getCurrentTargetId1)
-	// .forEach(chart => chart.addEventListener("change", getCurrentTarget))
+data.sort((a, b) => a.key.localeCompare(b.key));
+console.log(data);
 
 	// This adds a svg element and determines the size of the svg and adds the class: bubble
-	const svg = select(`#${id}`)
-		.select(".bubble");
+	const currentChart = select(`#${id}`);
+
+	const svg = currentChart.select(".bubble");
 
 	// this selects all the nodes and puts it in an array
 	const nodes = hierarchy(root)
 		.sum(d => d.amount);
+
+	const nodeTotal = nodes.data.children.reduce((node, currentValue) => node + currentValue.amount, 0);
+
+	const table = currentChart.select(".table")
+		.selectAll(".table-row")
+		.data(data)
+
+	table.join(
+		enter =>{
+			const tableEnter = enter.append("div")
+				.attr("class", "table-row")
+
+			tableEnter.append("div")
+				.attr("class", "legend-color")
+				.style("background-color", d => colors[d.key])
+
+			tableEnter.append("div")
+				.attr("class", "legend-type")
+				.append("p")
+				.text(d => d.key)
+
+			tableEnter.append("div")
+				.attr("class", "legend-amount")
+				.append("p")
+				.text(d => Math.round(d.amount / nodeTotal * 1000) / 10 + "%")
+
+			},
+		update => {
+			update.select("table-row")
+
+			update.select(".legend-color")
+				.style("background-color", d => colors[d.key])
+
+			update.select(".legend-type")
+				.select("p")
+				.text(d => d.key)
+
+			update.select(".legend-amount")
+				.select("p")
+				.text(d => Math.round(d.amount / nodeTotal * 1000) / 10 + "%");
+		}
+	)
+
+	console.log(table)
 
 	// this selects all of the individual nodes, adds a "g" element to all the nodes and adds a class as well
 
@@ -74,7 +108,7 @@ const colors = {
 			})
 			nodeEnter.append("title")
 				.text(function(d) {
-					return d.data.key + ": " + d.data.amount;
+					return d.data.key + ": " + Math.round(d.data.amount / nodeTotal * 1000) / 10+ "%";
 				})
 			nodeEnter.append("circle")
 				.attr("r", function(d) {
@@ -96,42 +130,17 @@ const colors = {
 				})
 				.attr("fill", "white")
 
-			const selectBubble = d => {
+			nodeEnter.append("text")
 
-				const { data } = d;
-
-				const currentBubble = select(this);
-
-				if(currentBubble !== this){
-					svg.selectAll("#details-popup").remove();
-				}
-
-				const textblock = svg.selectAll("#details-popup")
-					.data([d])
-					.enter()
-					.append("g")
-					.attr("id", "details-popup")
-					.attr("font-size", 14)
-					.attr("font-family", "sans-serif")
-					.attr("text-anchor", "start")
-					.attr("transform", data => `translate(0, 20)`);
-
-				textblock.append("text")
-					.text(data.key + ": " + data.amount)
-					.attr("y", "16")
-
-				}
-				nodeEnter.on("click", selectBubble);
 			},
 		update => {
-			console.log(update);
 			update.transition().duration(300)
 			.attr("transform", function(d) {
 				return "translate(" + d.x + "," + d.y + ")";
 			})
 			update.select("title")
 				.text(function(d) {
-					return d.data.key + ": " + d.data.amount;
+					return d.data.key + ": " + Math.round(d.data.amount / nodeTotal * 1000) / 10 + "%";
 				})
 			update.select("circle")
 				.attr("r", function(d) {
@@ -150,7 +159,7 @@ const colors = {
 				.attr("font-size", function(d){
 					return d.r/3;
 				})
-				.attr("fill", "white")				
+				.attr("fill", "white")
 		}
 	)
 

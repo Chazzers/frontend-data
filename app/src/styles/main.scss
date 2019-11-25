@@ -6,6 +6,10 @@ $fifth-color:#ea6a4b;
 $sixth-color: #42645b;
 $padding-one: 1em;
 
+* {
+  box-sizing: border-box;
+}
+
 body {
   background-color: $third-color;
   padding: 0;
@@ -42,12 +46,66 @@ body {
       flex: 1;
       display: flex;
       flex-direction: column;
+
+      &:first-of-type {
+        justify-content: flex-end;
+        align-items: flex-end;
+      }
+
+      &:last-of-type {
+        justify-content: flex-start;
+        align-items: flex-start;
+      }
+
+      #table1 {
+        display: flex;
+        justify-content: flex-end;
+        flex-direction: column;
+        align-items: flex-end;
+        padding-right: 4em;
+      }
+
+      .table-row {
+        display: flex;
+        max-width: 200px;
+        align-items: center;
+        border-bottom: solid black 1px;
+        height: 1.5em;
+        border-left: solid black 1px;
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        .legend-color {
+          border-right: solid black 1px;
+          width: 2em;
+          height: 100%;
+        }
+
+        .legend-type {
+          padding-left: 1em;
+          height: 100%;
+          width: 100px;
+          border-right: solid black 1px;
+        }
+
+        .legend-amount {
+          height: 100%;
+          padding-left: 1em;
+          width: 50px;
+        }
+
+        p {
+          margin: 0;
+          padding: 0;
+        }
+      }
     }
   }
 
   .svg-container {
     display: flex;
-    justify-content: flex-start;
 
     .bubble {
     }
