@@ -28,7 +28,7 @@ body {
       display: flex;
       flex-direction: column; }
       body .chart-container .chart:first-of-type {
-        justify-content: flex-end;
+        justify-content: flex-start;
         align-items: flex-end; }
       body .chart-container .chart:last-of-type {
         justify-content: flex-start;

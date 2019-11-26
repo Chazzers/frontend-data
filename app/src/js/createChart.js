@@ -22,18 +22,20 @@ function createChart(data, id) {
 		.size([width, height])
 		.padding(10);
 
-const colors = {
-	"Bijl": "#1f77b4",
-	"Boog": "#ff7f0e",
-	"Dolk": "#9467bd",
-	"Knots": "#bcbd22",
-	"Lans": "#e377c2",
-	"Mes": "#7f7f7f",
-	"Piek": "#17becf",
-	"Strijdzeis": "#8c564b",
-	"Vechtketting": "#d62728",
-	"Zwaard": "#2ca02c"
-}
+	const colors = {
+		"Bijl": "#1f77b4",
+		"Boog": "#ff7f0e",
+		"Dolk": "#9467bd",
+		"Knots": "#bcbd22",
+		"Lans": "#e377c2",
+		"Mes": "#7f7f7f",
+		"Piek": "#17becf",
+		"Strijdzeis": "#8c564b",
+		"Vechtketting": "#d62728",
+		"Zwaard": "#2ca02c"
+	}
+
+
 
 data.sort((a, b) => a.key.localeCompare(b.key));
 console.log(data);
@@ -88,8 +90,6 @@ console.log(data);
 				.text(d => Math.round(d.amount / nodeTotal * 1000) / 10 + "%");
 		}
 	)
-
-	console.log(table)
 
 	// this selects all of the individual nodes, adds a "g" element to all the nodes and adds a class as well
 
@@ -162,9 +162,6 @@ console.log(data);
 				.attr("fill", "white")
 		}
 	)
-
-	// This is a click function that when clicked displays the weapon type and value of the clicked bubble
-	// Based on example from https://observablehq.com/@johnhaldeman/tutorial-on-d3-basics-and-circle-packing-heirarchical-bubb
 
 	select(self.frameElement)
 		.style("height", height + "px");
