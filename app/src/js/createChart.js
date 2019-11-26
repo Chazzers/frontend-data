@@ -38,7 +38,6 @@ function createChart(data, id) {
 
 
 data.sort((a, b) => a.key.localeCompare(b.key));
-console.log(data);
 
 	// This adds a svg element and determines the size of the svg and adds the class: bubble
 	const currentChart = select(`#${id}`);
