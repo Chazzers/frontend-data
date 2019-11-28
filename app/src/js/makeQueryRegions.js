@@ -2,7 +2,6 @@ import { url } from "./url.js";
 
 function makeQueryRegions() {
 	// Url of api endpoint
-
 	const queryRegions = `
 	PREFIX dct: <http://purl.org/dc/terms/>
 	PREFIX dc: <http://purl.org/dc/elements/1.1/>
@@ -25,6 +24,7 @@ function makeQueryRegions() {
 	} GROUP BY ?place1 ?placeName
 	`;
 
+	// This creates adds the query to the url and transforms it into something that the browser understands
 	const connectionStringRegions = url + "?query=" + encodeURIComponent(queryRegions) + "&format=json";
 
 	return connectionStringRegions;

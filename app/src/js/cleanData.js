@@ -13,7 +13,7 @@ function deNestProperties(data) {
 		type: data.type.value.toLowerCase()
 	});
 }
-
+// The preferred data has the values nested into another object. This function makes the data look like this: key: value
 function deNestPropertiesLanden(data) {
 	return Object.assign({}, data, {
 		place1: data.place1.value,
@@ -30,13 +30,13 @@ function transformData(data) {
 	newData.forEach(item => item.amount = item.values.length);
 	return newData;
 }
-
+// This function creates svg elements.
 function createSvg() {
 	// Scale the svg dimensions based on the width and height of the browser
 	const height = window.innerHeight / 2.2;
 	const width = window.innerWidth / 2.2;
 
-
+	// This adds an svg to all the svg containers
 	const svg = selectAll(".chart")
 		.selectAll(".svg-container")
 		.append("svg")
