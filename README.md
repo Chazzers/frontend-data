@@ -63,7 +63,7 @@ SELECT ?cho ?placeName ?title ?type WHERE {
 }
 ```
 
-More about this can be found in the chapters: [05. Getting the data](https://github.com/Chazzers/functional-programming/wiki/05.-Getting-the-data) and [08. Creating an interaction](https://github.com/Chazzers/functional-programming/wiki/09.-Creating-an-interaction)
+More about this can be found in the chapters: [05. Getting the data](https://github.com/Chazzers/frontend-data/wiki/05.-Getting-the-data) and [08. Creating an interaction](https://github.com/Chazzers/frontend-data/wiki/09.-Creating-an-interaction)
 
 Source: [Wikipedia SPARQL](https://nl.wikipedia.org › wiki › SPARQL)
 
